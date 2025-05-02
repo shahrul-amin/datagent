@@ -27,4 +27,3 @@ dist-ssr
 
 config.json
 server/uploads/*
-server/test.py

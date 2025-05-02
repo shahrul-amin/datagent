@@ -2,7 +2,7 @@ import requests
 
 def delete_all():
     print('Deleding previous uploads')
-    response = requests.post('http://127.0.0.1:8080/delete')
+    response = requests.post('http://127.0.0.1:5000/delete')
     print(response.text)
 
 def upload():
@@ -10,24 +10,24 @@ def upload():
     
     with open(file_path, 'rb') as file:
         files = {'file': (file_path, file)}
-        response = requests.post('http://127.0.0.1:8080/upload', files=files)
+        response = requests.post('http://127.0.0.1:5000/upload', files=files)
         print(response.text)
 
 def question():
     print("Enter a question")
     header = {'question': input()}
-    response = requests.get('http://127.0.0.1:8080/query/text', headers=header)
+    response = requests.get('http://127.0.0.1:5000/query/text', headers=header)
     print(response.text)
 
 def code():
     print("Enter code request")
     header = {'question': input()}
-    response = requests.get('http://127.0.0.1:8080/query/code', headers=header)
+    response = requests.get('http://127.0.0.1:5000/query/code', headers=header)
     print(response.text)
 
 def execute():
     print('executing code')
-    response = requests.get('http://127.0.0.1:8080/query/execute')
+    response = requests.get('http://127.0.0.1:5000/query/execute')
     print(response.text)
 
 def main():

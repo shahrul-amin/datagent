@@ -55,6 +55,7 @@ def load_dataset():
                                system_instruction="You are a senior Data Scientist from Google. Your name is Datagment AI.",
                                temperature=1.0), history=chat.get_history()
                             )
+    chat.send_message('Uploaded ' + filename + ' in ' + path)
 
     # for f in client.files.list():
     #     print(' ', f.name)
@@ -117,6 +118,6 @@ def ask():
 
 if __name__ == "__main__":
     # Run on localhost
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
     # execute_generated_code()
     
