@@ -1,5 +1,6 @@
 import requests
 
+
 def delete_all():
     print('Deleding previous uploads')
     response = requests.post('http://127.0.0.1:5000/delete')
@@ -15,7 +16,8 @@ def upload():
 
 def question():
     print("Enter a question")
-    header = {'question': input()}
+    header = {'question': input(),
+              'debug': 'True'}
     response = requests.get('http://127.0.0.1:5000/query/text', headers=header)
     print(response.text)
 
@@ -31,13 +33,13 @@ def execute():
     print(response.text)
 
 def main():
-    delete_all()
+    # delete_all()
     print('Loading video games dataset')
-    upload()
-    code()
-    # while (True):
-    #     question()
-    execute()
+    # upload()
+    # code()
+    while (True):
+        question()
+    # execute()
 
 if __name__ == '__main__':
     main()

@@ -9,7 +9,7 @@ export default function useChat() {
   const typingInterval = useRef(null);
 
   const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-  const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
+  const API_URL = 'http://127.0.0.1:5000/query/text'; //`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
 
   // Clear intervals on unmount
   useEffect(() => {
@@ -74,10 +74,13 @@ export default function useChat() {
         }
       };
 
-      const response = await fetch(`${API_URL}?key=${API_KEY}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody),
+      const response = await fetch(`${API_URL}`, {
+        method: 'GET',
+        headers: { 
+          // 'Content-Type': 'application/json',
+                    'question': message
+                },
+        //body: JSON.stringify(requestBody),
         signal: abortController.current.signal
       });
 

@@ -1,16 +1,28 @@
-from flask import Flask, jsonify, make_response, request, redirect
+from flask import Flask, jsonify, make_response, request, redirect, Response
 from google import genai
 from google.genai import types
 from werkzeug.utils import secure_filename
+from flask_cors import CORS
 import json
 import os
 
 
 path = ''
 app = Flask(__name__)
+CORS(app)
 # 20 mb max dataset size (max for gemini)
 app.config['MAX_CONTENT_LENGTH'] = 20 * 1024 * 1024
 app.config['UPLOAD_FOLDER'] = os.path.dirname(os.path.abspath(__file__)) + '\\uploads\\'
+
+response_template = {
+                        "candidates": [{
+                            "content": {
+                            "parts": [{
+                                "text": "Why tf do we need such a long template"
+                            }]
+                            }
+                        }]
+                    }
 
 with open('config.json', 'r') as config_file:
     client = genai.Client(api_key=json.load(config_file)['API'])
@@ -99,22 +111,37 @@ def execute_generated_code():
         return jsonify({'Success': 'ok'}), 200
     except Exception:
         return jsonify({'Error': 'Couldnt execute code'}), 500
-    # return jsonify({'Success': 'ok'}), 200
-    
 
+    
 
 @app.route("/query/text", methods=["GET"])
 def ask():
     """
     Ask for text response.
     """
+    if request.method == 'OPTIONS':
+        res = Response()
+        res.headers['X-Content-Type-Options'] = '*'
+        res.headers['Allow'] = ['GET', 'OPTIONS']
+        return res
+    
     try:
         question = request.headers['question']
         response = chat.send_message(question)
-        return response.text
+        print(response.text)
+        
+        if (request.headers['debug'] == 'True'):
+            return response.text
+
+        ans = response_template
+        ans['candidates'][0]['content']['parts'][0]['text'] = response.text
+        return jsonify(ans), 200
     except Exception:
         return jsonify({'Error': 'Gemini failed to answer the query.'}), 500
 
+@app.route("/history", methods=["GET"])
+def get_history():
+    return jsonify(chat.get_history()), 200
 
 if __name__ == "__main__":
     # Run on localhost
