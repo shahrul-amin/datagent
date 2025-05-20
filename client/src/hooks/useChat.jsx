@@ -78,7 +78,8 @@ export default function useChat() {
         method: 'GET',
         headers: { 
           // 'Content-Type': 'application/json',
-                    'question': message
+                    'question': message,
+                    'debug': 'False'
                 },
         //body: JSON.stringify(requestBody),
         signal: abortController.current.signal
