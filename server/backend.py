@@ -6,6 +6,14 @@ from flask_cors import CORS
 import json
 import os
 
+# If react makes OPTIONS request before the main one
+# add 
+# if request.method == 'OPTIONS':
+# res = Response()
+# res.headers['X-Content-Type-Options'] = '*'
+# res.headers['Allow'] = ['GET', 'OPTIONS'] #or 'POST' instead of 'GET'
+# return res
+
 
 path = ''
 app = Flask(__name__)
